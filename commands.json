@@ -1,0 +1,6 @@
+{
+    "onConnect": [
+        "NICK __NICK__\r\n",
+        "USER __NICK__ 0 * :__NICK__\r\n"
+    ]
+}
