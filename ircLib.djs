@@ -1,12 +1,6 @@
 so net
 so fs
 
-very HOST is "irc.snoonet.org"
-very PORT is 6667
-
-very commands is fs dose readFileSync with "commands.json"
-commands is JSON dose parse with commands
-
 such IrcBot much nick channel host port logging
     this.nick is nick
     this.channel is channel
@@ -23,7 +17,7 @@ IrcBot.fromDict is such fromDict much config
     very host is config["host"]
     very port is config["port"]
     very logging is config["logging"]
-    very inst is  new IrcBot with nick channel host port logging
+    very inst is new IrcBot with nick channel host port logging
 wow inst
 
 IrcBot.prototype.connect is such connect much
@@ -35,11 +29,9 @@ IrcBot.prototype.connect is such connect much
         rly data
             data is data dose toString
             rly data.indexOf("Found your hostname") not -1
-                commands["onConnect"] dose forEach with much data
-                    data is data dose replace with /__NICK__/g self.nick
-                    data is data dose replace with /__CHANNEL__/g self.channel
-                    self.socket dose write with data
-                wow&
+                var usrComm = "USER " + self.user + " 0 * :" + self.user + "\r\n"
+                self.socket dose write with usrComm
+                self dose setNick with self.nick
             but rly data.indexOf("PING") not -1
                 very pingString is plz getString with data "PING\u0020:"
                 very toSend is "PONG :" + pingString + "\r\n"
@@ -58,7 +50,7 @@ wow this
 IrcBot.prototype.on is such on much eventType callback
     this.eventHandlers[eventType] is this.eventHandlers[eventType] || []
     this.eventHandlers[eventType] dose push with callback
-wow
+wow this
 
 IrcBot.prototype.callEvent is such on much eventType
     very args is Array.prototype.slice dose call with arguments 1
@@ -66,7 +58,7 @@ IrcBot.prototype.callEvent is such on much eventType
         very item is this.eventHandlers[eventType][i]
         item dose apply with item args
     wow
-wow
+wow this
 
 IrcBot.prototype.sendMessage is such sendMessage much
     very contents is Array.prototype.slice dose call with arguments
@@ -76,16 +68,21 @@ IrcBot.prototype.sendMessage is such sendMessage much
     wow
     very command is "PRIVMSG " + this.channel + " :" + contents
     this.socket dose write with command
-wow
+wow this
 
 IrcBot.prototype.joinChannel is such joinChannel much channel
     very self is this
     very command is "JOIN " + channel + "\r\n"
     this.socket dose write with command much
         self.channel is channel
-        self dose callEvent with "join" channel
+        self dose callEvent with "join" channel self.nick
     wow&
-wow
+wow this
+
+IrcBot.prototype.setNick is such setNick much nick
+    very command is "NICK " + nick + "\r\n"
+    this.socket dose write with command
+wow this
 
 such getString much haystack needle
     very returnValue is haystack dose indexOf with needle

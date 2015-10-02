@@ -1,6 +1,6 @@
 {
    "nick": "DogeScriptBot",
-   "channel": "#berk",
+   "channel": "#berkbottest",
    "host": "irc.snoonet.org",
    "port": 6667,
    "logging": true
